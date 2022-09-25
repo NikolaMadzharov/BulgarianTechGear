@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MobilePhoneListingViewModel>
+
+<div class="row">
+    @foreach (var phone in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="@phone.Url" class="card-img-top" alt="@phone.Model - @phone.Year (@phone.MobilePhoneBrands)">
+            <div class="card-body">
+                <h5 class="card-title">@phone.Model (@phone.Year)</h5>
+                <h5 class="card-title">@phone.Price BGN</h5>
+                <a asp-controller="MobilePhone" asp-action="Details" asp-route-id="@phone.Id" class="btn btn-primary">More details</a>
+            </div>
+        </div>
+    }
+</div>
+
+
