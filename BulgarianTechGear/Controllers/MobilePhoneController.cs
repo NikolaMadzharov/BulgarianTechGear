@@ -20,9 +20,19 @@ namespace BulgarianTechGear.Controllers
             Brands = this.GetPhoneBrands()
         });
 
-
-        public IActionResult All()
+      
+        public IActionResult All(string searchTerm)
         {
+
+            var phoneQuery = this.data.MobilePhones.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                phoneQuery = phoneQuery.Where(
+                    p => p.Model.ToLower().Contains(searchTerm.ToLower())
+                          || p.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
             var phones = this.data
                 .MobilePhones
                 .OrderByDescending(x => x.Id)
@@ -36,9 +46,11 @@ namespace BulgarianTechGear.Controllers
                     Url = x.Url,
                     MobilePhoneBrands = x.MobilePhoneBrand.Brand
                 }).ToList();
+
             return View(new AllPhonesQueryModel
                             {
-                                Phones = phones
+                                Phones = phones,
+                                SearchTerm = searchTerm
                             });
         }
 
