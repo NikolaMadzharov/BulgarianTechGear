@@ -36,7 +36,10 @@ namespace BulgarianTechGear.Controllers
                     Url = x.Url,
                     MobilePhoneBrands = x.MobilePhoneBrand.Brand
                 }).ToList();
-            return View(phones);
+            return View(new AllPhonesQueryModel
+                            {
+                                Phones = phones
+                            });
         }
 
 

@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulgarianTechGear.Controllers
 {
+    using BulgarianTechGear.Models;
     using BulgarianTechGear.Models.MobilePhones;
+    using BulgarianTechGear.Models.MobilePhones.Home;
+    using System.Diagnostics;
 
     public class HomeController : Controller
     {
@@ -19,19 +22,22 @@ namespace BulgarianTechGear.Controllers
                 .MobilePhones
                 .OrderByDescending(x => x.Id)
                 .Select(
-                    x => new MobilePhoneListingViewModel
-                             {
+                    x => new PhoneIndexViewModelcs
+                    {
                                  Id = x.Id,
                                  Model = x.Model,
                                  Price = x.Price,
                                  Year = x.Year,
-                                 Url = x.Url,
-                                 MobilePhoneBrands = x.MobilePhoneBrand.Brand
+                                 Url = x.Url
+                                 
                              })
                 .Take(3)
                 .ToList();
+
             return View(phones);
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
