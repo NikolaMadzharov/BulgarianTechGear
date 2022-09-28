@@ -26,12 +26,12 @@ namespace BulgarianTechGear.Controllers
 
             var phoneQuery = this.data.MobilePhones.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                phoneQuery = phoneQuery.Where(
-                    p => p.Model.ToLower().Contains(searchTerm.ToLower())
-                          || p.Description.ToLower().Contains(searchTerm.ToLower()));
-            }
+            //if (!string.IsNullOrWhiteSpace(searchTerm))
+            //{
+            //    phoneQuery = phoneQuery.Where(
+            //        p => p.Model.ToLower().Contains(searchTerm.ToLower())
+            //              || p.Description.ToLower().Contains(searchTerm.ToLower()));
+            //}
 
             var phones = this.data
                 .MobilePhones
