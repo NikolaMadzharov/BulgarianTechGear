@@ -1,5 +1,8 @@
+using AutoMapper;
+
 using BulgarianTechGear.Data;
 using BulgarianTechGear.Infrastructure;
+using BulgarianTechGear.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +19,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<BulgarianTechGearDbContext>();
 builder.Services.AddControllersWithViews();
 
+
+
 var app = builder.Build();
+
 
 app.PrepareDatabase();
 

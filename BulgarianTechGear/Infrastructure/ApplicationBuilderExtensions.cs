@@ -18,6 +18,8 @@
 
             SeedModels(data);
 
+            
+
             return app;
             // app.ApplicationServices.GetService<ApplicationDbContext>()
 

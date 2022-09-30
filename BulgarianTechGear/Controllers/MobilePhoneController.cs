@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 namespace BulgarianTechGear.Controllers
 {
+    using AutoMapper;
+
     using BulgarianTechGear.Data;
     using BulgarianTechGear.Data.Models;
     using BulgarianTechGear.Models.MobilePhones;
@@ -9,10 +11,12 @@ namespace BulgarianTechGear.Controllers
     public class MobilePhoneController : Controller
     {
         private readonly BulgarianTechGearDbContext data;
+        private readonly IMapper _mapper;
 
-        public MobilePhoneController(BulgarianTechGearDbContext data)
+        public MobilePhoneController(BulgarianTechGearDbContext data, IMapper mapper)
         {
-            this.data = data;
+            this.data = data; 
+            _mapper = mapper;
         }
 
         public IActionResult Add() => View(new AddMobilePhoneFromModel
@@ -58,32 +62,43 @@ namespace BulgarianTechGear.Controllers
         [HttpPost]
         public IActionResult Add(AddMobilePhoneFromModel phone)
         {
+            MobilePhone mobile = new MobilePhone();
             if (!this.data.MobilePhoneBrands.Any(m => m.Id == phone.BrandId))
             {
                 this.ModelState.AddModelError(nameof(phone.BrandId), "The brand does not exist!");
             }
 
 
-            var phoneData = new Data.Models.MobilePhone
+            if (!ModelState.IsValid)
             {
-                Model = phone.Model,
-                Price = (decimal)phone.Price,
-                DisplaySizeInch = (double)phone.DisplaySizeInch,
-                DisplayType = phone.DisplayType,
-                Ram = (int)phone.Ram,
-                Resolution = phone.Resolution,
-                Processor = phone.Processor,
-                Description = phone.Description,
-                Url = phone.Url,
-                PixelsFrontCamera = (int)phone.PixelsFrontCamera,
-                PixelsBackCamera = (int)phone.PixelsBackCamera,
-                Year = (int)phone.Year,
-                BatteryCapacity = (double)phone.BatteryCapacity,
-                Memory = (int)phone.Memory,
-                MobilePhoneBrandId = phone.BrandId
-            };
-            this.data.Add(phoneData);
+                return this.RedirectToAction("All");
+            }
+
+            this._mapper.Map(mobile, phone);
+
+            this.data.Add(mobile);
             this.data.SaveChanges();
+
+            //var phoneData = new Data.Models.MobilePhone
+            //{
+            //    Model = phone.Model,
+            //    Price = (decimal)phone.Price,
+            //    DisplaySizeInch = (double)phone.DisplaySizeInch,
+            //    DisplayType = phone.DisplayType,
+            //    Ram = (int)phone.Ram,
+            //    Resolution = phone.Resolution,
+            //    Processor = phone.Processor,
+            //    Description = phone.Description,
+            //    Url = phone.Url,
+            //    PixelsFrontCamera = (int)phone.PixelsFrontCamera,
+            //    PixelsBackCamera = (int)phone.PixelsBackCamera,
+            //    Year = (int)phone.Year,
+            //    BatteryCapacity = (double)phone.BatteryCapacity,
+            //    Memory = (int)phone.Memory,
+            //    MobilePhoneBrandId = phone.BrandId
+            //};
+            //this.data.Add(phoneData);
+            //this.data.SaveChanges();
 
             return this.RedirectToAction(nameof(All));
         }
